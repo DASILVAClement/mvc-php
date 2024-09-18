@@ -10,5 +10,7 @@
 <body>
 <h1>Bienvenue sur mon site de livre</h1>
 <a href="index.php?route=livre-list">Liste des livres</a>
+<br>
+<a href="index.php?route=creer_livre">Création d'un livre</a>
 </body>
 </html>

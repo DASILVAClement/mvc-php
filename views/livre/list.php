@@ -8,10 +8,12 @@
     <title>Liste livres</title>
 </head>
 <body>
+
     <h1>Liste des livres</h1>
+
     <ul>
         <?php foreach ($livres as $livre) : ?>
-            <li><?= $livre->getTitre() ?></li> <a href="index.php?route=details-livre">Détails du livre</a>
+            <li><?= $livre->getTitre() ?></li> <a href="index.php?route=details-livre&id_livre=<?=$livre->getId()?>">Détails du livre</a>
         <?php endforeach;?>
     </ul>
 

@@ -11,9 +11,9 @@
 <h1>Liste des détails</h1>
 <ul>
 
-    <?php foreach ($details as $detail) : ?>
-        <li><?= $detail->getTitre() ?></li>
-    <?php endforeach;?>
+    <li>Le titre du livre est <?= $livre->getTitre() ?></li>
+    <li>L'auteur de ce livre est a <?= $livre->getAuteur() ?></li>
+    <li>Le livre a <?= $livre->getNbPages() ?> pages</li>
 
 </ul>
 <a href="index.php">Accueil</a>

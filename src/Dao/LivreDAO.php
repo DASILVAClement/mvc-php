@@ -35,18 +35,28 @@ class LivreDAO
         return $livres;
     }
 
-    public function selectDetail() : array {
-        $requete = $this->db->query("SELECT * FROM livre");
-        $details_livre = $requete->fetchAll(\PDO::FETCH_ASSOC);
-        $details = [];
-        foreach ($details_livre as $detail_livre){
-            $detail = new Livre(); //Constructeur par défaut
-            $detail->setId($detail_livre['id_livre']);
-            $detail->setTitre($detail_livre['titre_livre']);
-            $detail->setNbPages($detail_livre['nombre_pages_livre']);
-            $detail->setAuteur($detail_livre['auteur_livre']);
-            $details[] = $detail;
+    public function selectDetail(int $id_livre) : ?Livre {
+        $requete = $this->db->query("SELECT * FROM livre WHERE id_livre = $id_livre");
+        $livreBD = $requete->fetch(\PDO::FETCH_ASSOC);
+        if (!$livreBD){
+            return null;
         }
-        return $details;
+
+        $livre = new Livre(); //Constructeur par défaut
+        $livre->setId($livreBD['id_livre']);
+        $livre->setTitre($livreBD['titre_livre']);
+        $livre->setNbPages($livreBD['nombre_pages_livre']);
+        $livre->setAuteur($livreBD['auteur_livre']);
+
+        return $livre;
+    }
+
+    public function creer_livre($titre_livre, $nombre_pages_livre, $auteur_livre) : void {
+        $requete = $this->db->query("INSERT INTO livre (titre_livre, nombre_pages, auteur_livre) VALUES (?, ?, ?)");
+        $requete->bindParam(1, $titre_livre);
+        $requete->bindParam(2, $nombre_pages_livre);
+        $requete->bindParam(3, $auteur_livre);
+
+        $requete->execute();
     }
 }
