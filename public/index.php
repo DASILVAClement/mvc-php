@@ -1,9 +1,15 @@
 <?php
 
+//Récupérer l'EntityManager
+/**
+ * @var Doctrine\ORM\EntityManager $entityManager
+ */
+$entityManager = require_once __DIR__ .'/../config/bootstrap.php';
+
+
 //Composeur Frontal => Routeur
 //Toutes les requêtes des utilisateurs passent par ce fichier
 
-require_once __DIR__ . '/../vendor/autoload.php';
 
 //Chargement des variables d'environnements
 $dotEnv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
@@ -22,25 +28,23 @@ switch ($route){
         break;
     case 'livre-list' :
         //$livreDAO est une dépendance de LivreControllers
-        $livreDAO = new \App\Dao\LivreDAO($db);
         //Injecter la dépendance $livreDAO dans l'objet LivreController
-        $livreController = new \App\Controllers\LivreController($livreDAO);
+        $livreController = new \App\Controllers\LivreController($entityManager);
         $livreController->list();
         break;
     case 'details-livre' :
         $id_livre = $_GET['id_livre'] ?? null;
         if ($id_livre) {
-            $livreDAO = new \App\Dao\LivreDAO($db);
-            $livreController = new \App\Controllers\LivreController($livreDAO);
+            $livreController = new \App\Controllers\LivreController($entityManager);
             $livreController->details($id_livre);
         }else{
             echo "La requête n'est pas valide";
         }
         break;
     case 'creer_livre' :
-        $livreDAO = new \App\Dao\LivreDAO($db);
-        $livreController = new \App\Controllers\LivreController($livreDAO);
+        $livreController = new \App\Controllers\LivreController($entityManager);
         $livreController->creer_livre();
+        break;
     default :
         //Erreur 404
         echo "Page non trouvée";

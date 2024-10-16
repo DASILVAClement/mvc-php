@@ -1,24 +1,23 @@
 <?php
-
 namespace App\Controllers;
-
-use App\Dao\LivreDAO;
-
+use Doctrine\ORM\EntityManager;
 
 class LivreController
 {
-    private LivreDAO $livreDAO; //Dépendance
-
-
-    public function __construct(LivreDAO $dao)
-    {
-        $this->livreDAO = $dao;
-    }
+    private EntityManager $entityManager; //Dépendance
 
     //Lister l'ensemble des livres
+    /**
+     * @param EntityManager $entityManager
+     */
+    public function __construct(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     public function list(){
-        //Fait appel au modèle afin de récupérer les données dans la BDD
-        $livres = $this->livreDAO->selectAll();
+        $livreRepository = $this->entityManager->getRepository(\App\Entity\Livre::class);
+        $livres = $livreRepository->findAll();
 
         //Fait appel à la vue afin de renvoyer la page
         require __DIR__ . '/../../views/livre/list.php';
@@ -26,8 +25,10 @@ class LivreController
 
     public function details(int $id_livre) {
         //Fait appel au modèle afin de récupérer les données dans la BDD
-        $livre = $this->livreDAO->selectDetail($id_livre);
-        if ($livre) {
+        $livreRepository = $this->entityManager->getRepository(\App\Entity\Livre::class);
+        $livres = $livreRepository->find($id_livre);
+
+        if ($livres) {
             require __DIR__ . '/../../views/livre/details.php';
         }else{
             //header("HTTP/1.0 404 Not Found");
@@ -38,6 +39,7 @@ class LivreController
     public function creer_livre() {
 
         require __DIR__ . '/../../views/livre/formulaire_creation.php';
+
     }
 
 }

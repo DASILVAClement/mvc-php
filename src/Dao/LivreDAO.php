@@ -7,6 +7,7 @@ use App\Entity\Livre;
 class LivreDAO
 {
     private \PDO $db;
+    private $entityManager;
 
 
     //Renvoyer la requête "SELECT * FROM LIVRE"
@@ -14,9 +15,13 @@ class LivreDAO
     /**
      * @param \PDO $db
      */
+    /**
+     * @var Doctrine\ORM\EntityManager $entityManager
+     */
     public function __construct(\PDO $db)
     {
         $this->db = $db;
+        $this->entityManager = require_once __DIR__ .'/../../config/bootstrap.php';
     }
 
     public function selectAll() : array {
